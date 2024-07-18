@@ -46,6 +46,10 @@ void setup(void){
 
 }
 
+void loop(void){
+
+}
+
 void printWiFiData() {
   // print your WiFi shield's IP address:
   IPAddress ip = WiFi.localIP();
