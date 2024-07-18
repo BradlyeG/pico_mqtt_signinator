@@ -25,8 +25,14 @@ void setup(void){
   while(!Serial){
     ; //wait for serial
   }
+  //Need to initialize display and set text options
   display.init(240, 240);
-
+  display.fillScreen(0x000000);
+  display.setCursor(0, 0);
+  display.setTextColor(0xFFFFFF);
+  display.setTextSize(2);
+  display.setTextWrap(true);
+  
   // attempt to connect to WiFi network:
   while ( status != WL_CONNECTED) {
     display.println("Attempting to connect to WPA SSID: ");
@@ -43,47 +49,45 @@ void setup(void){
   printCurrentNet();
   printWiFiData();
 
-
 }
 
 void loop(void){
-
+  ;
 }
 
 void printWiFiData() {
   // print your WiFi shield's IP address:
   IPAddress ip = WiFi.localIP();
-  display.print("IP Address: ");
-  display.println(ip);
+  display.println("IP Address: ");
   display.println(ip);
 
   // print your MAC address:
   byte mac[6];
   WiFi.macAddress(mac);
-  display.print("MAC address: ");
+  display.println("MAC address: ");
   printMacAddress(mac);
 
 }
 
 void printCurrentNet() {
   // print the SSID of the network you're attached to:
-  display.print("SSID: ");
+  display.println("SSID: ");
   display.println(WiFi.SSID());
 
   // print the MAC address of the router you're attached to:
   byte bssid[6];
   WiFi.BSSID(bssid);
-  display.print("BSSID: ");
+  display.println("BSSID: ");
   printMacAddress(bssid);
 
   // print the received signal strength:
   long rssi = WiFi.RSSI();
-  display.print("signal strength (RSSI):");
+  display.println("signal strength (RSSI):");
   display.println(rssi);
 
   // print the encryption type:
   byte encryption = WiFi.encryptionType();
-  display.print("Encryption Type:");
+  display.println("Encryption Type:");
   display.println(encryption, HEX);
   Serial.println();
 }
