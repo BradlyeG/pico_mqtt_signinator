@@ -89,7 +89,7 @@ void printCurrentNet() {
   byte encryption = WiFi.encryptionType();
   display.println("Encryption Type:");
   display.println(encryption, HEX);
-  Serial.println();
+  display.println();
 }
 
 void printMacAddress(byte mac[]) {
