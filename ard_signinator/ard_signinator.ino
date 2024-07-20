@@ -3,10 +3,15 @@
 #define D_CS A3
 #define D_RST A4
 #define D_DC A5
+#define BROKER_IP "0.0.0.0" //IP address of MQTT broker
+#define CLIENT_ID "Ground Office" //ID that will be used to connect to broker
+#define UNAME "public" // Username that will be used to connect to broker
+#define PASS "public" // Password that will be used to connect to broker
 
 #include <Adafruit_GFX.h> //Graphics library
 #include <Adafruit_ST7789.h> //Hardware library for ST7789 display
 #include <WiFi101.h> //WiFi library
+#include <MQTT.h> // MQTT Client library
 #include <SPI.h>
 
 #include "arduino_secrets.h" //Used to store private wifi credentials
@@ -18,10 +23,15 @@ int status = WL_IDLE_STATUS;
 //Create the display
 Adafruit_ST7789 display = Adafruit_ST7789(D_CS, D_DC, D_RST);
 
+//Create WiFi device and MQTT client
+WiFiClient wifi;
+MQTTClient client;
+
 void setup(void){
   //Configure pins for Adafruit ATWINC1500 Feather
   WiFi.setPins(8,7,4,2);
   Serial.begin(9600);
+  WiFi.begin(ssid, pass);
   while(!Serial){
     ; //wait for serial
   }
@@ -32,27 +42,24 @@ void setup(void){
   display.setTextColor(0xFFFFFF);
   display.setTextSize(2);
   display.setTextWrap(true);
-  
-  // attempt to connect to WiFi network:
-  while ( status != WL_CONNECTED) {
-    display.println("Attempting to connect to WPA SSID: ");
-    display.println(ssid);
-    // Connect to WPA/WPA2 network:
-    status = WiFi.begin(ssid, pass);
-    display.println("Waiting 10 seconds for connection...");
-    // wait 10 seconds for connection:
-    delay(10000);
-  }
 
-  // print out network information
-  display.println("Connection success!");
-  printCurrentNet();
-  printWiFiData();
+  //Initialize client and connect to broker
+  client.begin(BROKER_IP, wifi);
+  client.onMessage(messageReceived);
+  connectBroker();
 
 }
 
 void loop(void){
-  ;
+  client.loop();
+
+  if(!client.connected()){
+    connect();
+  }
+
+  //test code - publish message every second
+  delay(1000);
+  client.publish("/hello", "world");
 }
 
 void printWiFiData() {
@@ -103,4 +110,32 @@ void printMacAddress(byte mac[]) {
     }
   }
   display.println();
+}
+
+void connect(){
+  // attempt to connect to WiFi network:
+  while ( status != WL_CONNECTED) {
+    display.println("Attempting to connect to WPA SSID: ");
+    display.println(ssid);
+    // Connect to WPA/WPA2 network:
+    status = WiFi.begin(ssid, pass);
+    display.println("Waiting 10 seconds for connection...");
+    // wait 3 seconds for connection:
+    delay(3000);
+      // print out network information
+    display.println("WiFi Connection success!");
+  }
+  display.fillScreen(0x000000);
+  display.println("Trying to connect to broker...");
+  while (!client.connect(CLIENT_ID, UNAME, PASS)){
+    display.print(".");
+    delay(1000);
+  }
+  display.println("Connected to broker!");
+
+  client.subscribe("/hello");
+}
+
+void messageReceived(String &topic, String &payload){
+  Serial.println("incoming: " + topic + " - " + payload);
 }
