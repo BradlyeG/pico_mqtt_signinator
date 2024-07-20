@@ -46,7 +46,7 @@ void setup(void){
   //Initialize client and connect to broker
   client.begin(BROKER_IP, wifi);
   client.onMessage(messageReceived);
-  connectBroker();
+  connect();
 
 }
 
