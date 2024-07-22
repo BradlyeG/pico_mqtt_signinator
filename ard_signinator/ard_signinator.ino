@@ -126,6 +126,7 @@ void connect(){
     display.println("WiFi Connection success!");
   }
   display.fillScreen(0x000000);
+  display.setCursor(0, 0);
   display.println("Trying to connect to broker...");
   while (!client.connect(CLIENT_ID, UNAME, PASS)){
     display.print(".");
