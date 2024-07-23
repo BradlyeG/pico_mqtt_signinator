@@ -7,6 +7,7 @@
 #define CLIENT_ID "Ground Office" //ID that will be used to connect to broker
 #define UNAME "public" // Username that will be used to connect to broker
 #define PASS "public" // Password that will be used to connect to broker
+#define CLIENT_TOPIC "signs/gf_sign" // Configure what topic corresponds to this sign
 
 #include <Adafruit_GFX.h> //Graphics library
 #include <Adafruit_ST7789.h> //Hardware library for ST7789 display
@@ -56,10 +57,6 @@ void loop(void){
   if(!client.connected()){
     connect();
   }
-
-  //test code - publish message every second
-  delay(1000);
-  client.publish("/hello", "world");
 }
 
 void printWiFiData() {
@@ -125,18 +122,24 @@ void connect(){
       // print out network information
     display.println("WiFi Connection success!");
   }
+  
   display.fillScreen(0x000000);
   display.setCursor(0, 0);
   display.println("Trying to connect to broker...");
+  // Wait for connection to broker
   while (!client.connect(CLIENT_ID, UNAME, PASS)){
     display.print(".");
-    delay(1000);
+    delay(250);
   }
+  
   display.println("Connected to broker!");
-
-  client.subscribe("/hello");
+  client.subscribe(CLIENT_TOPIC);
+  display.println("Subscribed to topic");
+  display.println("Awaiting sign message...");
 }
 
 void messageReceived(String &topic, String &payload){
-  Serial.println("incoming: " + topic + " - " + payload);
+  display.fillScreen(0x000000);
+  display.setCursor(0, 0);
+  display.println(payload);
 }
