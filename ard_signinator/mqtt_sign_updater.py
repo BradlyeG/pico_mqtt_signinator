@@ -47,12 +47,21 @@ def run():
     print("\t****************************************")
 
     unacked_publish = set()
+    client.on_publish = on_publish
 
     client = connect_mqtt()
     client.loop_start()
     message = input("\nPlease enter brief message to display on sign")
     topic = input("\nPlease enter the topic the sign is subsribed to")
     pub_msg = client.publish(topic, message, qos=1)
+    unacked_publish.add(pub_msg.mid)
+
+    # Wait for message to be published
+    while len(unacked_publish):
+        time.sleep(0.1)
+
+    client.disconnect()
+    client.loop_stop()
 
 if __name__ == '__main__':
     run()
