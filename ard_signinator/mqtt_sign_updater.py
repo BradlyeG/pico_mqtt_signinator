@@ -3,7 +3,6 @@ from paho.mqtt import client as mqtt_client
 # Configuration options
 broker = "broker_address"
 port = 1883
-topic = "signs/GF_Office"
 client_id = "Python Sign Updater"
 username = "username"
 password = "password"
