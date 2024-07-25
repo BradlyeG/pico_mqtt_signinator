@@ -132,9 +132,11 @@ void connect(){
     delay(250);
   }
   
+  display.fillScreen(0x000000);
+  display.setCursor(0, 0);
   display.println("Connected to broker!");
   client.subscribe(CLIENT_TOPIC);
-  display.println("Subscribed to topic");
+  display.println(CLIENT_ID);
   display.println("Awaiting sign message...");
 }
 
