@@ -7,7 +7,11 @@ The development platform at present is an Adafruit 1.3" Color TFT Screen (ST7789
 ## TODO
 
 Cache message on successful receipt and check if most recent message differs from cache
+
 Configure TLS for Mosquitto
+
 Sign should be topic observe
+
 Refactor terminal app to take parameters instead of asking for input
+
 Use LED matrix display
