@@ -1,7 +1,8 @@
 CIRCUITPY_WIFI_SSID = "your-ssid"
 CIRCUITPY_WIFI_PASSWORD = "your-password"
-WIDTH = 64
-HEIGHT = 64
-BIT_DEPTH = 3
-CHAIN_HEIGHT = 1
-SERPENTINE = true
+unit_width = 64
+unit_height = 64
+bit_depth = 3
+chain_height = 1
+chain_width = 1
+serpentine = "True"
