@@ -1,5 +1,10 @@
 CIRCUITPY_WIFI_SSID = "your-ssid"
 CIRCUITPY_WIFI_PASSWORD = "your-password"
+broker_ip = "192.168.0.2"
+client_id = "Ground Office"
+uname = "ground_office"
+pass = "your-client-password"
+client_topic = "signs/gf_sign"
 unit_width = 64
 unit_height = 64
 bit_depth = 3
