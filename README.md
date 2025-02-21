@@ -5,12 +5,9 @@ I want a sign hanging on my office door, whose text can be updated with a simple
 The development platform at present is a HUB75 64x64 LED Matrix from WaveShare
 
 ## TODO
-Finish rebasing to circuitpython
+Configure TLS
 
-Cache message on successful receipt and check if most recent message differs from cache
-
-Configure TLS for Mosquitto
-
-Sign should be topic observe
-
-Refactor terminal app to take parameters instead of asking for input
+Refactor terminal app to something more useful
+  Custom text input and color
+  Quick options for status display (Out of office, busy, on a call, etc)
+  Eventually build options for provisioning more signs (input board type and display parameters, output code.py)
