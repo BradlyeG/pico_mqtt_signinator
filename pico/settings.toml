@@ -12,3 +12,4 @@ bit_depth = 3
 chain_height = 1
 chain_width = 1
 serpentine = "True"
+rotation = 180

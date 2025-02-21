@@ -24,7 +24,7 @@ matrix = rgbmatrix.RGBMatrix(
    doublebuffer = True)
 
 # Assign the matrix to a display that can be manipulated
-display = framebufferio.FramebufferDisplay(matrix, auto_refresh=False)
+display = framebufferio.FramebufferDisplay(matrix, rotation = os.getenv('rotation'), auto_refresh=False)
 
 # MQTT Callback methods for when events occur
 def connected(client, userdata, flags, rc):
