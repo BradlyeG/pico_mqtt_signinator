@@ -1,4 +1,4 @@
-import adafruit_display_text.label
+import adafruit_display_text.text_box as text_box
 import board
 import displayio
 import framebufferio
@@ -41,11 +41,22 @@ def message(client, topic, message):
    :param str topic: Topic with new value
    :param str message: The new value
    """
-   print(f"New message on topic {topic}: {message}")
+   display.root_group = None
+   display_text = text_box.TextBox(terminalio.FONT,
+        text = message,
+        color = 0xFFFFFF,
+        width = os.getenv('unit_width'),
+        height = os.getenv('unit_height'),
+        align = text_box.TextBox.ALIGN_LEFT
+    )
+   display_text.anchor_point = (0,0)
+   display_text.anchored_position = (0,0)
+   display.root_group = display_text
+   display.refresh()
 
 # Connect to WiFi
 print("Connecting to Wifi...")
-display.refresh(minimum_frames_per_second=0)
+display.refresh()
 
 try:
     wifi.radio.connect(os.getenv('CIRCUITPY_WIFI_SSID'), os.getenv('CIRCUITPY_WIFI_PASSWORD'))
@@ -60,19 +71,31 @@ pool = adafruit_connection_manager.get_radio_socketpool(wifi.radio)
 ssl_context = adafruit_connection_manager.get_radio_ssl_context(wifi.radio)
 
 print("My MAC addr:", [hex(i) for i in wifi.radio.mac_address])
-display.refresh(minimum_frames_per_second=0)
+display.refresh()
 time.sleep(0.5)
 
 print("My IP addr:", wifi.radio.ipv4_address)
-display.refresh(minimum_frames_per_second=0)
+display.refresh()
 time.sleep(0.5)
 
-#mqtt_client = MQTT.MQTT(broker=,username=,password=,socketpool=,ssl_context=)
+mqtt_client = MQTT.MQTT(
+    broker=os.getenv('broker_ip'),
+    port=os.getenv('broker_port'),
+    username=os.getenv('uname'),
+    password=os.getenv('pass'),
+    client_id=os.getenv('client_id'),
+    is_ssl=False,
+    socket_pool=pool,
+    ssl_context=ssl_context,
+)
 
-google_ipv4 = ipaddress.ip_address("8.8.4.4")
+# Set callback methods
+mqtt_client.on_connect = connected
+mqtt_client.on_disconnect = disconnected
+mqtt_client.on_message = message
+
+mqtt_client.connect()
 
 while True:
-    print("Ping google.com: %f ms" % (wifi.radio.ping(google_ipv4)*1000))
-    display.refresh(minimum_frames_per_second=0)
-    time.sleep(5)
-
+    mqtt_client.loop()
+    time.sleep(1)
