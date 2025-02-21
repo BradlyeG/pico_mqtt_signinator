@@ -11,3 +11,7 @@ Refactor terminal app to something more useful
   Custom text input and color
   Quick options for status display (Out of office, busy, on a call, etc)
   Eventually build options for provisioning more signs (input board type and display parameters, output code.py)
+
+Add some energy saving features
+  automatically turn off at a certain time
+  tune to balance refresh / to poll time (less radio polling = more time microcontroller is in a low power state)
