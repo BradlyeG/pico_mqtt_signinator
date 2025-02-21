@@ -1,4 +1,5 @@
 import time
+import re
 from paho.mqtt import client as mqtt_client
 
 # Configuration options
@@ -51,11 +52,19 @@ def run():
 
     client = connect_mqtt()
     client.loop_start()
+
     # Wait to make sure we are connected before proceeding
     while not client.is_connected():
         time.sleep(0.1)
-    message = input("\nPlease enter brief message to display on sign: ")
-    client.publish(TOPIC, message, qos=1)
+
+    text = input("\nPlease enter brief message to display on sign: ")
+    color = input("\nPlease enter a hex color code (E.g. 0x00FF00): ")
+
+    while not re.match("^[a-fA-F0-9]+$", color):
+        print ("\nInvalid color code. Enter exactly 6 characters, 0-9 and A-F ")
+        color = input("\nPlease enter a hex color code (E.g. 00FF00): ")
+
+    client.publish(TOPIC, color + text, qos=1)
     client.disconnect()
     client.loop_stop()
 

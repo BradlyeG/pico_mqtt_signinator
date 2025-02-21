@@ -43,8 +43,8 @@ def message(client, topic, message):
    """
    display.root_group = None
    display_text = text_box.TextBox(terminalio.FONT,
-        text = message,
-        color = 0xFFFFFF,
+        text = message[6:],
+        color = int(("0x" + message[:6])),
         width = os.getenv('unit_width'),
         height = os.getenv('unit_height'),
         align = text_box.TextBox.ALIGN_LEFT
