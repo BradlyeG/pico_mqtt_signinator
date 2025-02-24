@@ -7,16 +7,8 @@ The development platform at present is a HUB75 64x64 LED Matrix from WaveShare
 ## TODO
 Configure TLS
 
-Refactor terminal app to something more useful
+Refactor terminal app to a GUI tool for better administration of signs
   
-  Custom text input and color
-  
-  Quick options for status display (Out of office, busy, on a call, etc)
-  
-  Eventually build options for provisioning more signs (input board type and display parameters, output code.py)
+Create Provision GUI tool to quickly create new signs
 
-Add some energy saving features
-  
-  automatically turn off at a certain time
-  
-  tune to balance refresh / to poll time (less radio polling = more time microcontroller is in a low power state)
+Bedtime (blank at certain time/wake back up)
