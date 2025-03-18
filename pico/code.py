@@ -58,10 +58,14 @@ def message(client, topic, message):
    :param str topic: Topic with new value
    :param str message: The new value
    """
+   try:
+        raw_col = int(("0x" + message[:6]))
+   except:
+        raw_col = 0xFFFFFF
    display.root_group = None
    display_text = text_box.TextBox(terminalio.FONT,
         text = message[6:],
-        color = int(("0x" + message[:6])),
+        color = raw_col,
         width = unit_width,
         height = unit_height,
         align = text_box.TextBox.ALIGN_LEFT
