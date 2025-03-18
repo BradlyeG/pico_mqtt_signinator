@@ -60,7 +60,7 @@ def run():
     text = input("\nPlease enter brief message to display on sign: ")
     color = input("\nPlease enter a hex color code (E.g. 0x00FF00): ")
 
-    while not re.match("^[a-fA-F0-9]+$", color):
+    while not re.match(r"^[0-9a-fA-F]+$", color) or len(color) < 6:
         print ("\nInvalid color code. Enter exactly 6 characters, 0-9 and A-F ")
         color = input("\nPlease enter a hex color code (E.g. 00FF00): ")
 
