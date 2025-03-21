@@ -1,0 +1,7 @@
+The following libraries are required:
+
+adafruit_connection_manager
+adafruit_display_text
+adafruit_minimqtt
+adafruit_ticks
+cptoml
