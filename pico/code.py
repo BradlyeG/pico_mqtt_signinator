@@ -2,9 +2,9 @@ import time
 import wifi
 import alarm
 import board
-import busio
 import digitalio
 import displayio
+import framebufferio
 import ipaddress
 import rgbmatrix
 import terminalio
