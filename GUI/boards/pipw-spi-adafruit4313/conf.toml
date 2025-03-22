@@ -1,0 +1,33 @@
+# Signinator Board Configuration File
+name = "Pi Pico W, SPI Interface, Adafruit 1.3in 240x40 ST7789 LCD"
+
+additional_dependencies = ["busio","fourwire","adafruit_st7789"]
+
+display = '''
+display_bus = FourWire(busio.SPI(board.GP14, MOSI = board.GP15),
+    command = board.GP12,
+    chip_select = board.GP11,
+    reset = board.GP13)
+
+display = ST7789(display_bus, width = unit_width, height = unit_height, rowstart=80)
+'''
+
+# settings.toml config
+[settings]
+CIRCUITPY_WIFI_SSID = "your-ssid"
+CIRCUITPY_WIFI_PASSWORD = "your-password"
+broker_ip = "192.168.0.2"
+broker_port = 1883
+client_id = "your-client-id"
+uname = "your-client-username"
+pass = "your-client-password"
+client_topic = "your/sign/topic"
+unit_width = 240
+unit_height = 240
+bedtime_hr = 21
+bedtime_min = 2
+wake_hr = 21
+wake_min = 1
+last_sleep_day = 0
+sleep_duration_seconds = 60
+use_bedtime = "True"

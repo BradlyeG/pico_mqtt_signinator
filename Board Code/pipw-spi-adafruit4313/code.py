@@ -32,14 +32,10 @@ sleep_duration_seconds = fetch('sleep_duration_seconds')
 displayio.release_displays()
 
 # Declare display device bus
-tft_cs = board.GP11
-tft_dc = board.GP12
-tft_rst = board.GP13
-spi_mosi = board.GP15
-spi_clk = board.GP14
-spi = busio.SPI(spi_clk, MOSI = spi_mosi)
-
-display_bus = FourWire(spi, command = tft_dc, chip_select = tft_cs, reset = tft_rst)
+display_bus = FourWire(busio.SPI(board.GP14, MOSI = board.GP15),
+    command = board.GP12,
+    chip_select = board.GP11,
+    reset = board.GP13)
 
 # Declare display
 display = ST7789(display_bus, width = unit_width, height = unit_height, rowstart=80)
