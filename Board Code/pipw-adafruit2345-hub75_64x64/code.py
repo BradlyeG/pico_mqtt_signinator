@@ -133,6 +133,19 @@ mqtt_client.on_message = message
 
 mqtt_client.connect()
 
+# Display wake up message
+display_text = text_box.TextBox(terminalio.FONT,
+        text = fetch('wakeup_message'),
+        color = 0xFFFFFF,
+        width = unit_width,
+        height = unit_height,
+        align = text_box.TextBox.ALIGN_LEFT
+    )
+display_text.anchor_point = (0,0)
+display_text.anchored_position = (0,0)
+display.root_group = display_text
+display.refresh()
+
 while True:
     mqtt_client.loop()
     current_time = ntp.datetime

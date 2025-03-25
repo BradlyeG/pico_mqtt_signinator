@@ -20,3 +20,4 @@ wake_min = 00 - 59 only
 last_sleep_day = 0 
 sleep_duration_seconds = 60
 use_bedtime = "True"
+wakeup_message = "Good Morning!"
