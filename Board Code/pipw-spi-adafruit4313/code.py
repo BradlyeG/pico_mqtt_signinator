@@ -1,19 +1,19 @@
-import time
 import wifi
 import alarm
 import board
-import busio
-import displayio
 import ipaddress
-import terminalio
 import adafruit_ntp
 import adafruit_connection_manager
-import adafruit_display_text.text_box as text_box
 import adafruit_minimqtt.adafruit_minimqtt as MQTT
+from busio import SPI
 from cptoml import fetch
 from cptoml import put
-from storage import remount
+from displayio import release_displays
 from fourwire import FourWire
+from storage import remount
+from terminalio import FONT as termfont
+from time import monotonic, sleep
+from adafruit_display_text import text_box
 from adafruit_st7789 import ST7789
 
 # Get all the env variables that get read multiple times
@@ -29,10 +29,10 @@ use_bedtime = fetch('use_bedtime')
 sleep_duration_seconds = fetch('sleep_duration_seconds')
 
 # Release displays first
-displayio.release_displays()
+release_displays()
 
 # Declare display device bus
-display_bus = FourWire(busio.SPI(board.GP14, MOSI = board.GP15),
+display_bus = FourWire(SPI(board.GP14, MOSI = board.GP15),
     command = board.GP12,
     chip_select = board.GP11,
     reset = board.GP13)
@@ -60,7 +60,7 @@ def message(client, topic, message):
    except:
         raw_col = 0xFFFFFF
    display.root_group = None
-   display_text = text_box.TextBox(terminalio.FONT,
+   display_text = text_box.TextBox(termfont,
         text = message[6:],
         color = raw_col,
         width = unit_width,
@@ -80,8 +80,8 @@ def is_bedtime(hr, mn, day):
                 remount("/", False)
                 put('last_sleep_day', current_day)
                 remount("/", True)
-                displayio.release_displays()
-                alarm.exit_and_deep_sleep_until_alarms(alarm.time.TimeAlarm(monotonic_time = time.monotonic() + sleep_duration_seconds))
+                release_displays()
+                alarm.exit_and_deep_sleep_until_alarms(alarm.time.TimeAlarm(monotonic_time = monotonic() + sleep_duration_seconds))
 
 # Connect to WiFi
 print("Connecting to Wifi...")
@@ -105,11 +105,11 @@ current_day = current_time[2]
 
 print("My MAC addr:", [hex(i) for i in wifi.radio.mac_address])
 display.refresh()
-time.sleep(0.5)
+sleep(0.5)
 
 print("My IP addr:", wifi.radio.ipv4_address)
 display.refresh()
-time.sleep(0.5)
+sleep(0.5)
 
 mqtt_client = MQTT.MQTT(
     broker=fetch('broker_ip'),
@@ -130,7 +130,7 @@ mqtt_client.on_message = message
 mqtt_client.connect()
 
 # Display wake up message
-display_text = text_box.TextBox(terminalio.FONT,
+display_text = text_box.TextBox(termfont,
         text = fetch('wakeup_message'),
         color = 0xFFFFFF,
         width = unit_width,
@@ -148,4 +148,4 @@ while True:
     print(f"I'm alive :) {current_time[3]}:{current_time[4]}")
     if eval(use_bedtime):
         is_bedtime(current_time[3], current_time[4], current_day)
-    time.sleep(15)
+    sleep(15)
