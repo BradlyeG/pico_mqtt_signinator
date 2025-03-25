@@ -33,14 +33,14 @@ displayio.release_displays()
 
 # Declare matrix device
 matrix = rgbmatrix.RGBMatrix(
-   width = unit_width * fetch('chain_width'), 
-   height = unit_height * fetch('chain_height') , 
+   width = unit_width * fetch('chain_width'),
+   height = unit_height * fetch('chain_height'),
    bit_depth = fetch('bit_depth'),
    rgb_pins = [board.GP2, board.GP3, board.GP4, board.GP5, board.GP8, board.GP9],
    addr_pins = [board.GP10, board.GP16, board.GP18, board.GP20, board.GP22],
    clock_pin = board.GP11, latch_pin = board.GP12, output_enable_pin = board.GP13,
    tile = fetch('chain_height'), serpentine = eval(fetch('serpentine')),
-   doublebuffer = True)
+   doublebuffer = False)
 
 # Assign the matrix to a display that can be manipulated
 display = framebufferio.FramebufferDisplay(matrix, rotation = fetch('rotation'), auto_refresh=False)
